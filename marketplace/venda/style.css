@@ -217,6 +217,10 @@
     font-size: small;
 }
 
+.userText{
+    margin: 10px;
+}
+
 #comentariosContainer > .comentarioBox > .likeBox {
     display: flex;
     gap: 10px;

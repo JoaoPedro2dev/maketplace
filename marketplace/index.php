@@ -4,6 +4,10 @@
     $sql = "SELECT * FROM produtos";
 
     $resultado = $conexao->query($sql);
+
+    session_start();
+
+    echo $_SESSION['nome'] . " " . " " . $_SESSION['id'] . "<a href='login/deslogar.php'>Deslogar</a>";
 ?>
 
 <!DOCTYPE html>
@@ -25,10 +29,22 @@
             <i class="bi bi-x-lg" id="clearSearch"></i>
         </div>
         <div id="userBox">
-            <button id="userLogin">
-                <i class="bi bi-person-circle"></i>
-                <p>Entrar</p>
-            </button>
+            <?php 
+                if(!isset($_SESSION['id'])){
+                    echo '
+                        <button id="userLogin" onclick="window.location.href=\'./login\'">
+                            <i class="bi bi-person-circle"></i>
+                            <p>Entrar</p>
+                        </button>      
+                    ';
+                }else{
+                    echo '
+                        <button class="logado" onclick="">
+                            <img src="'.$_SESSION['foto'].'"/>
+                        </button>      
+                    ';
+                }
+            ?>
 
             <i class="bi bi-bag" id="carrinhoIcon"></i>
         </div>
@@ -105,9 +121,11 @@
 
     <nav>
         <a href="#ofertas">Ofertas do dia</a>
-        <a href="#maisComprados">Mais comprados</a>
+        <a href="#masculino">Masculino</a>
+        <a href="#feminino">Feminino</a>
+        <a href="#infantil">Infantil</a>
         <a href="#acessorios">Acessorios</a>
-        <a href="#mais">Descubra mais</a>
+        <a href="#calçados">Calçados</a>
     </nav>
 
     <div id="sectionContainers">
@@ -117,13 +135,19 @@
             <div class="carousel-wrapper">
                 <div class="carousel-track">
                     <?php 
-                        while($dados = $resultado->fetch_assoc()){
+                        $data = new DateTime();
+
+                        $sqlOferta = "SELECT * FROM produtos WHERE data_inicio_promocao = '".$data->format('Y-m-d')."'";
+
+                        $resultadoOferta = $conexao->query($sqlOferta);
+
+                        while($dadosOferta = $resultadoOferta->fetch_assoc()){
                             echo "
-                                <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dados["id"]."\"'>
-                                    <img src='./img/ice-falling-brown-drink.jpg' alt=''>
+                                <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosOferta["id"]."&categoria=".$dadosOferta['categoria']."\"'>
+                                    <img src='".$dadosOferta['foto_1']."' alt=''>
                                     <div class='produtoInfos'>
-                                        <p>".htmlspecialchars($dados['produto_nome'])."</p>
-                                        <strong>R$".htmlspecialchars($dados['preco'])."</strong>
+                                        <p>".htmlspecialchars($dadosOferta['produto_nome'])."</p>
+                                        <strong>R$".htmlspecialchars($dadosOferta['preco'])."</strong>
                                         <p>Frete grátis</p>
                                     </div>
                                 </div>
@@ -135,355 +159,144 @@
             <button class="nav-controls next-btn"><i class="bi bi-arrow-right"></i></button>
         </section>
 
-        <section class="produtos" id="maisComprados">
-            <strong>Conheça os mais comprados</strong>
+        <section class="produtos" id="masculino">
+            <strong>Conheça itens masculinos</strong>
             <button class="nav-controls prev-btn dois"><i class="bi bi-arrow-left"></i></button>
             <div class="carousel-wrapper">
                 <div class="carousel-track">
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                <?php 
+                    $sqlMasculino = "SELECT * FROM produtos WHERE categoria = 'Masculino'";
 
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    $resultadoMasculino = $conexao->query($sqlMasculino);
 
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 122</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 10</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 10</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 10</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 22</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    while($dadosMasculino = $resultadoMasculino->fetch_assoc()){
+                        echo "
+                            <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosMasculino["id"]."&categoria=".$dadosMasculino['categoria']."\"'>
+                                <img src='".$dadosMasculino['foto_1']."' alt=''>
+                                <div class='produtoInfos'>
+                                    <p>".htmlspecialchars($dadosMasculino['produto_nome'])."</p>
+                                    <strong>R$".htmlspecialchars($dadosMasculino['preco'])."</strong>
+                                    <p>Frete grátis</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                ?>
                 </div>
             </div>
             <button class="nav-controls next-btn dois"><i class="bi bi-arrow-right"></i></button>
         </section>
         
-        <section class="produtos" id="acessorios">
-            <strong>Está procurando acessorios?</strong>
+        <section class="produtos" id="feminino">
+            <strong>Conheça itens femininos</strong>
             <button class="nav-controls prev-btn tres"><i class="bi bi-arrow-left"></i></button>
             <div class="carousel-wrapper">
                 <div class="carousel-track">
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                <?php 
+                    $sqlFeminino = "SELECT * FROM produtos WHERE categoria = 'Feminino'";
 
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    $resultadoFeminino = $conexao->query($sqlFeminino);
 
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 122</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 10</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    while($dadosFeminino = $resultadoFeminino->fetch_assoc()){
+                        echo "
+                            <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosFeminino["id"]."&categoria=".$dadosFeminino['categoria']."\"'>
+                                <img src='".$dadosFeminino['foto_1']."' alt=''>
+                                <div class='produtoInfos'>
+                                    <p>".htmlspecialchars($dadosFeminino['produto_nome'])."</p>
+                                    <strong>R$".htmlspecialchars($dadosFeminino['preco'])."</strong>
+                                    <p>Frete grátis</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                ?>
                 </div>
             </div>
             <button class="nav-controls next-btn tres"><i class="bi bi-arrow-right"></i></button>
         </section>
 
-        <section class="produtos" id="mais">
-            <strong>Produtos que talvez você goste</strong>
-            <button class="nav-controls prev-btn quarto"><i class="bi bi-arrow-left"></i></button>
+        <section class="produtos" id="infantil">
+            <strong>Conheça itens infantis</strong>
+            <button class="nav-controls prev-btn quarto sete"><i class="bi bi-arrow-left"></i></button>
             <div class="carousel-wrapper">
                 <div class="carousel-track">
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                <?php 
+                    $sqlInfantil = "SELECT * FROM produtos WHERE categoria = 'Infantil'";
 
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    $resultadoInfantil = $conexao->query($sqlInfantil);
 
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 122</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 2</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/ice-falling-brown-drink.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 1</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-element">
-                        <img src="./img/side-view-chocolate-ice-cream-with-nuts-wafer-rolls.jpg" alt="">
-                        <div class="produtoInfos">
-                            <p>Produto 10</p>
-                            <strong>R$ 00,00</strong>
-                            <p>Frete grátis</p>
-                        </div>
-                    </div>
+                    while($dadosInfantil = $resultadoInfantil->fetch_assoc()){
+                        echo "
+                            <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosInfantil["id"]."&categoria=".$dadosInfantil['categoria']."\"'>
+                                <img src='".$dadosInfantil['foto_1']."' alt=''>
+                                <div class='produtoInfos'>
+                                    <p>".htmlspecialchars($dadosInfantil['produto_nome'])."</p>
+                                    <strong>R$".htmlspecialchars($dadosInfantil['preco'])."</strong>
+                                    <p>Frete grátis</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                ?>
                 </div>
             </div>
-            <button class="nav-controls next-btn quarto"><i class="bi bi-arrow-right"></i></button>
+            <button class="nav-controls next-btn quarto sete"><i class="bi bi-arrow-right"></i></button>
+        </section>
+        
+        <section class="produtos" id="acessorios">
+            <strong>Esta procurando acessórios?</strong>
+            <button class="nav-controls prev-btn oito"><i class="bi bi-arrow-left"></i></button>
+            <div class="carousel-wrapper">
+                <div class="carousel-track">
+                <?php 
+                    $sqlAcessorio = "SELECT * FROM produtos WHERE categoria = 'Acessorio'";
+
+                    $resultadoAcessorio = $conexao->query($sqlAcessorio);
+
+                    while($dadosAcessorio = $resultadoAcessorio->fetch_assoc()){
+                        echo "
+                            <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosAcessorio["id"]."&categoria=".$dadosAcessorio['categoria']."\"'>
+                                <img src='".$dadosAcessorio['foto_1']."' alt=''>
+                                <div class='produtoInfos'>
+                                    <p>".htmlspecialchars($dadosAcessorio['produto_nome'])."</p>
+                                    <strong>R$".htmlspecialchars($dadosAcessorio['preco'])."</strong>
+                                    <p>Frete grátis</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                ?>
+                </div>
+            </div>
+            <button class="nav-controls next-btn oito"><i class="bi bi-arrow-right"></i></button>
+        </section>
+
+        <section class="produtos" id="calçados">
+            <strong>Esta procurando calçados?</strong>
+            <button class="nav-controls prev-btn nove"><i class="bi bi-arrow-left"></i></button>
+            <div class="carousel-wrapper">
+                <div class="carousel-track">
+                <?php 
+                    $sqlCalcado = "SELECT * FROM produtos WHERE categoria = 'Calcado'";
+
+                    $resultadoCalcado = $conexao->query($sqlCalcado);
+
+                    while($dadosCalcado = $resultadoCalcado->fetch_assoc()){
+                        echo "
+                            <div class='carousel-element' onclick='window.location.href=\"./venda?id_produto=".$dadosCalcado["id"]."&categoria=".$dadosCalcado['categoria']."\"'>
+                                <img src='".$dadosCalcado['foto_1']."' alt=''>
+                                <div class='produtoInfos'>
+                                    <p>".htmlspecialchars($dadosCalcado['produto_nome'])."</p>
+                                    <strong>R$".htmlspecialchars($dadosCalcado['preco'])."</strong>
+                                    <p>Frete grátis</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                ?>
+                </div>
+            </div>
+            <button class="nav-controls next-btn nove"><i class="bi bi-arrow-right"></i></button>
         </section>
     </div>
 

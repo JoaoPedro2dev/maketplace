@@ -3,6 +3,11 @@ const iconSearch = document.querySelector('#searchIcon');
 const iconClear = document.querySelector('#clearSearch');
 
 inputSearch.addEventListener('input', inputVerification)
+inputSearch.addEventListener('keydown', function(event){
+    if(event.key === 'Enter' && inputSearch.value.trim() != ''){
+        window.location.href = `http://localhost/marketplace/pesquisa/?pesquisa=${inputSearch.value}`;
+    }
+})
 
 function inputVerification(){
     if(inputSearch.value.trim() != ""){

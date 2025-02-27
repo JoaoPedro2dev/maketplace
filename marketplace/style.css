@@ -22,7 +22,7 @@ body{
 }
 
 header > span{
-    cursor: default;
+    cursor: pointer;
 }
 
 #searchBox{
@@ -71,6 +71,29 @@ header > span{
 #userLogin > .bi-person-circle{
     font-size: 24px;
 }
+
+.logado{
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 1px;
+    transition: .2s;
+    cursor: pointer;
+    border: 1px solid;
+    width: 45px;
+    height: 45px;
+}
+
+.logado > img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.logado:hover{
+    border-color: #6a6ae0;
+}
+
+
 
 .bi-bag{
     font-size: 28px;
@@ -396,6 +419,20 @@ section{
 
 .seis{
     top: 225%;
+}
+
+.sete{
+    top: 265%;
+    background-color: #6a6ae0;
+}
+
+.oito{
+    top: 320%;
+    background-color: #6a6ae0;
+}
+
+.nove{
+    top: 380%;
 }
 
 .prev-btn {

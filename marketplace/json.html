@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br />
+    <font size='1'><table class='xdebug-error xe-uncaught-exception' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+    <tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Fatal error: Uncaught mysqli_sql_exception: Table 'ecommerce.usuario' doesn't exist in C:\wamp64\www\marketplace\cadastroUsuario\enviarEmail.php on line <i>21</i></th></tr>
+    <tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> mysqli_sql_exception: Table 'ecommerce.usuario' doesn't exist in C:\wamp64\www\marketplace\cadastroUsuario\enviarEmail.php on line <i>21</i></th></tr>
+    <tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+    <tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+    <tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0006</td><td bgcolor='#eeeeec' align='right'>450992</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\marketplace\cadastroUsuario\enviarEmail.php' bgcolor='#eeeeec'>...\enviarEmail.php<b>:</b>0</td></tr>
+    <tr><td bgcolor='#eeeeec' align='center'>2</td><td bgcolor='#eeeeec' align='center'>0.0142</td><td bgcolor='#eeeeec' align='right'>633944</td><td bgcolor='#eeeeec'>verificarDados( <span>$conexao = </span><span>class mysqli { public string|int $affected_rows = *uninitialized*; public string $client_info = *uninitialized*; public int $client_version = *uninitialized*; public int $connect_errno = *uninitialized*; public ?string $connect_error = *uninitialized*; public int $errno = *uninitialized*; public string $error = *uninitialized*; public array $error_list = *uninitialized*; public int $field_count = *uninitialized*; public string $host_info = *uninitialized*; public ?string $info = *uninitialized*; public string|int $insert_id = *uninitialized*; public string $server_info = *uninitialized*; public int $server_version = *uninitialized*; public string $sqlstate = *uninitialized*; public int $protocol_version = *uninitialized*; public int $thread_id = *uninitialized*; public int $warning_count = *uninitialized* }</span>, <span>$valor = </span><span>&#39;id_usuario&#39;</span>, <span>$tabela = </span><span>&#39;usuario&#39;</span>, <span>$condicao = </span><span>&#39;cpf&#39;</span>, <span>$dadoUser = </span><span>&#39;&#39;</span> )</td><td title='C:\wamp64\www\marketplace\cadastroUsuario\enviarEmail.php' bgcolor='#eeeeec'>...\enviarEmail.php<b>:</b>44</td></tr>
+    <tr><td bgcolor='#eeeeec' align='center'>3</td><td bgcolor='#eeeeec' align='center'>0.0143</td><td bgcolor='#eeeeec' align='right'>634024</td><td bgcolor='#eeeeec'><a href='http://www.php.net/mysqli.prepare' target='_new'>prepare</a>( <span>$query = </span><span>&#39;SELECT id_usuario FROM usuario WHERE cpf = ?&#39;</span> )</td><td title='C:\wamp64\www\marketplace\cadastroUsuario\enviarEmail.php' bgcolor='#eeeeec'>...\enviarEmail.php<b>:</b>21</td></tr>
+    </table></font>
+    
+</body>
+</html>

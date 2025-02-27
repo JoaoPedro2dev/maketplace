@@ -1,0 +1,23 @@
+form > h2{
+    text-align: center;
+}
+
+form > #emailBox{
+    display: none;
+}
+
+form > #cpfBox > a{
+    font-size: small;
+    display: none;
+}
+
+#passContent{
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#passContent > span{
+    color: red;
+    font-size: small;
+}

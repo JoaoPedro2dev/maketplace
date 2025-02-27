@@ -1,22 +1,32 @@
 <?php 
     include_once"../conexao.php";
 
-    $id_produto = $_GET['id_produto'];  
-
-    //$sql = $conexao->prepare("SELECT * FROM produtos WHERE id = ?");
+    $id_produto = $_GET['id_produto']; 
 
     $sql = $conexao->prepare(
         "
-            SELECT produtos.*, vendedores.*, GROUP_CONCAT(comentarios.texto_comentario SEPARATOR ' , ') AS comentarios
+            SELECT produtos.*, vendedores.*
             FROM produtos
-            INNER JOIN vendedores ON produtos.id_vendedor = vendedores.id_vendedor
-            LEFT JOIN comentarios ON comentarios.id_produto = produtos.id 
+            INNER JOIN vendedores ON produtos.id_vendedor = vendedores.id_vendedor 
             WHERE produtos.id = ?; 
         "
     );
     $sql->bind_param("i", $id_produto);
     $sql->execute();
     $resultado = $sql->get_result();
+
+    $sqlComentario = $conexao->prepare(
+        "
+            SELECT comentarios.*, usuarios.*
+            FROM comentarios
+            INNER JOIN usuarios ON comentarios.id_usuario = usuarios.id_usuario 
+            WHERE comentarios.id_produto = ?; 
+        "
+    );
+    $sqlComentario->bind_param("i", $id_produto);
+    $sqlComentario->execute();
+    $resultadoComentarios = $sqlComentario->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -33,9 +43,9 @@
 </head>
 <body>
     <header>
-        <button class="closeBtn backBtn" onclick="window.location.href='../index.php'">
+        <!-- <button class="closeBtn backBtn" onclick="window.location.href='../index.php'">
             <i class="bi bi-arrow-left"></i>
-        </button>
+        </button> -->
         <span onclick="window.location.href='../index.php'">Marketplace</span>
         <div id="searchBox">
             <input type="text" placeholder="Pesquise seu item" id="searchInput">
@@ -136,13 +146,13 @@
                                     <div id="freteBox">
                         ';
             ?>
-                                <?php
-                                    if($dados['frete'] > 0){
-                                        echo "<p><span class=\"green\">Frete de </span>R$".htmlspecialchars(number_format($dados['frete'], 2, ",", "."))."</p>";
-                                    }else{
-                                        echo "<p><span class=\"green\">Frete Grátis</p>";
-                                    }
-                                ?>
+            <?php
+                if($dados['frete'] > 0){
+                    echo "<p><span class=\"green\">Frete de </span>R$".htmlspecialchars(number_format($dados['frete'], 2, ",", "."))."</p>";
+                }else{
+                    echo "<p><span class=\"green\">Frete Grátis</p>";
+                }
+            ?>
             <?php
                             
                         echo '
@@ -170,220 +180,77 @@
                 }else{
                     echo "Algo deu errado";
                 }
-            ?>              
+            ?>
+            
             <div id="comentariosContainer">
                 <h3>Comentarios de quem comprou</h3>
-                <!-- <?php       
-                    // if($dados['comentarios']){
-                        $i = 0;
+                <?php       
+                    if($resultadoComentarios->num_rows > 0){
+                        while($dadosComentario = $resultadoComentarios->fetch_assoc()){
+                            $dataComentario = new DateTime($dadosComentario['data_comentario']);
 
-                        while($i < count($dados['comentarios'])){
                             echo '
-                            
-
                                 <div class="comentarioBox">
                                     <div class="usuarioInfos">
-                                        <img src="../img/foto1.jpg" alt="">
+                                        <img src="'.$dadosComentario['foto'].'" alt="">
                                         <p>
-                                            <strong>'.$dados['comentarios'][0].'</strong>
-                                            <span>17/02/2024</span>
+                                            <strong>'.$dadosComentario['nome_usuario'].'</strong>
+                                            <span>'.$dataComentario->format("d/m/Y").'</span>
                                         </p>
                                     </div>
                                     <div class="userText">
-                                        <p>"Produto excelente! A qualidade superou minhas expectativas, material resistente e acabamento impecável. Chegou antes do prazo e bem embalado. Recomendo para quem está em dúvida! ⭐⭐⭐⭐⭐"</p>
+                                        <p>'.$dadosComentario['texto_comentario'].'</p>
                                     </div>
                                     <div class="likeBox">
                                         <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
+                                        <p><span>'.$dadosComentario['likes'].'<span> likes</p>
                                         <i class="bi bi-flag"></i>
                                     </div>
                                 </div> 
                             ';
-                            $i++;
                         }
-
-                        echo "  <p id=\"mostarComentariosBtn\">
-                                        Mostrar mais comentarios
-                                </p>";
-                    // }
-                ?> -->
-                
-                <div class="comentarioBox">
-                    <div class="usuarioInfos">
-                        <img src="" alt="">
-                        <p>
-                            <strong>Usuario 2</strong>
-                            <span>16/02/2024</span>
-                        </p>
-                    </div>
-                    <div class="userText">
-                        <p>"Comprei esse tênis há duas semanas e estou simplesmente apaixonado! 😍 Super confortável, leve e perfeito para corridas. O tamanho ficou certinho, e a qualidade do material é excelente. Além disso, a entrega foi super rápida, chegou antes do prazo! Recomendo demais! 👏🔥"</p>
-                    </div>
-                    <div class="likeBox">
-                        <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
-                        <i class="bi bi-flag"></i>
-                    </div>
-                </div> 
+                        echo "  ";   
+                    }
+                ?>
             </div>
-           
+            <p id="mostarComentariosBtn">Mostrar mais comentarios</p>
         </div>
     </div>
 
     <section class="produtos" id="maisComprados">
-        <strong>Conheça os mais comprados</strong>
+        <strong>Conheça itens semelhantes</strong>
         <button class="nav-controls prev-btn cinco"><i class="bi bi-arrow-left"></i></button>
         <div class="carousel-wrapper">
             <div class="carousel-track">
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
+            <?php 
+                $categoria = $_GET['categoria']; 
 
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 2</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
+                $sqlCategoria = $conexao->prepare("SELECT * FROM produtos WHERE categoria = ?");
+                $sqlCategoria->bind_param("s", $categoria);
+                $sqlCategoria->execute();
+                $resultadoCategoria = $sqlCategoria->get_result();
 
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 2</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 122</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 2</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 2</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 10</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 10</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 10</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto1.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 1</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
-
-                <div class="carousel-element">
-                    <img src="./img/foto2.jpg" alt="">
-                    <div class="produtoInfos">
-                        <p>Produto 22</p>
-                        <strong>R$ 00,00</strong>
-                        <p>Frete grátis</p>
-                    </div>
-                </div>
+                if($resultadoCategoria->num_rows > 0){
+                    while($dadosCategoria = $resultadoCategoria->fetch_assoc()){
+                        echo "
+                            <div class=\"carousel-element\" onclick='window.location.href=\"./index.php?id_produto=".$dadosCategoria["id"]."&categoria=".$dadosCategoria['categoria']."\"'>
+                                <img src=\"".$dadosCategoria['foto_1']."\" alt=\"\">
+                                <div class=\"produtoInfosz\">
+                                    <p>".$dadosCategoria['produto_nome']."</p>
+                                    <strong>R$".$dadosCategoria['preco']."</strong>
+                                    <p>".$dadosCategoria['frete']."</p>
+                                </div>
+                            </div>
+                        ";
+                    }
+                }
+            ?>
             </div>
         </div>
         <button class="nav-controls next-btn cinco"><i class="bi bi-arrow-right"></i></button>
     </section>
 
-    <section class="produtos" id="maisComprados">
+    <!-- <section class="produtos" id="maisComprados">
         <strong>Conheça os mais comprados</strong>
         <button class="nav-controls prev-btn seis"><i class="bi bi-arrow-left"></i></button>
         <div class="carousel-wrapper">
@@ -534,7 +401,7 @@
             </div>
         </div>
         <button class="nav-controls next-btn seis"><i class="bi bi-arrow-right"></i></button>
-    </section>
+    </section> -->
 
 </body>
 </html>

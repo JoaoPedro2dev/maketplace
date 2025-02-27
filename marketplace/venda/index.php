@@ -170,15 +170,16 @@
                 }else{
                     echo "Algo deu errado";
                 }
-            ?>
-                <?php       
-                    if($dados['comentarios']){
+            ?>              
+            <div id="comentariosContainer">
+                <h3>Comentarios de quem comprou</h3>
+                <!-- <?php       
+                    // if($dados['comentarios']){
                         $i = 0;
 
                         while($i < count($dados['comentarios'])){
                             echo '
-                            <div id="comentariosContainer">
-                                <h3>Comentarios de quem comprou</h3>
+                            
 
                                 <div class="comentarioBox">
                                     <div class="usuarioInfos">
@@ -204,43 +205,9 @@
                         echo "  <p id=\"mostarComentariosBtn\">
                                         Mostrar mais comentarios
                                 </p>";
-                    }
-                ?>
+                    // }
+                ?> -->
                 
-                <!-- <div class="comentarioBox">
-                    <div class="usuarioInfos">
-                        <img src="" alt="">
-                        <p>
-                            <strong>Usuario 2</strong>
-                            <span>16/02/2024</span>
-                        </p>
-                    </div>
-                    <div class="userText">
-                        <p>"Comprei esse tênis há duas semanas e estou simplesmente apaixonado! 😍 Super confortável, leve e perfeito para corridas. O tamanho ficou certinho, e a qualidade do material é excelente. Além disso, a entrega foi super rápida, chegou antes do prazo! Recomendo demais! 👏🔥"</p>
-                    </div>
-                    <div class="likeBox">
-                        <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
-                        <i class="bi bi-flag"></i>
-                    </div>
-                </div>  -->
-                <!-- <div class="comentarioBox">
-                    <div class="usuarioInfos">
-                        <img src="../img/foto1.jpg" alt="">
-                        <p>
-                            <strong>Usuario 1</strong>
-                            <span>17/02/2024</span>
-                        </p>
-                    </div>
-                    <div class="userText">
-                        <p>"Produto excelente! A qualidade superou minhas expectativas, material resistente e acabamento impecável. Chegou antes do prazo e bem embalado. Recomendo para quem está em dúvida! ⭐⭐⭐⭐⭐"</p>
-                    </div>
-                    <div class="likeBox">
-                        <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
-                        <i class="bi bi-flag"></i>
-                    </div>
-                </div> 
                 <div class="comentarioBox">
                     <div class="usuarioInfos">
                         <img src="" alt="">
@@ -258,40 +225,6 @@
                         <i class="bi bi-flag"></i>
                     </div>
                 </div> 
-                <div class="comentarioBox">
-                    <div class="usuarioInfos">
-                        <img src="../img/foto1.jpg" alt="">
-                        <p>
-                            <strong>Usuario 1</strong>
-                            <span>17/02/2024</span>
-                        </p>
-                    </div>
-                    <div class="userText">
-                        <p>"Produto excelente! A qualidade superou minhas expectativas, material resistente e acabamento impecável. Chegou antes do prazo e bem embalado. Recomendo para quem está em dúvida! ⭐⭐⭐⭐⭐"</p>
-                    </div>
-                    <div class="likeBox">
-                        <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
-                        <i class="bi bi-flag"></i>
-                    </div>
-                </div> 
-                <div class="comentarioBox">
-                    <div class="usuarioInfos">
-                        <img src="" alt="">
-                        <p>
-                            <strong>Usuario 2</strong>
-                            <span>16/02/2024</span>
-                        </p>
-                    </div>
-                    <div class="userText">
-                        <p>"Comprei esse tênis há duas semanas e estou simplesmente apaixonado! 😍 Super confortável, leve e perfeito para corridas. O tamanho ficou certinho, e a qualidade do material é excelente. Além disso, a entrega foi super rápida, chegou antes do prazo! Recomendo demais! 👏🔥"</p>
-                    </div>
-                    <div class="likeBox">
-                        <button class="like"><i class="bi bi-hand-thumbs-up"></i></button>
-                        <button class="deslike"><i class="bi bi-hand-thumbs-down"></i></button>
-                        <i class="bi bi-flag"></i>
-                    </div>
-                </div>  -->
             </div>
            
         </div>
